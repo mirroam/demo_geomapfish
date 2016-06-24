@@ -51,7 +51,7 @@ root = [
 ]
 %>
 
-[app.js]
+[cgxp.js]
 root =
     ${"\n    ".join(root)}
 first =

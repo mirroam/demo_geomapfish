@@ -43,7 +43,7 @@ DEVELOPMENT ?= FALSE
 # Language provided by the application
 LANGUAGES ?= en fr de
 NGEO_INTERFACES ?= desktop mobile
-CGXP_INTERFACES ?=
+CGXP_INTERFACES ?= cgxp edit
 # Used print version
 PRINT_VERSION ?= 3
 # Enable Docker target

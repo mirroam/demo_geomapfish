@@ -25,6 +25,7 @@ def main(global_config, **settings):
     # add the interfaces
     add_interface(config, "desktop", INTERFACE_TYPE_NGEO)
     add_interface(config, "mobile", INTERFACE_TYPE_NGEO)
+    add_interface(config, "cgxp")
     add_interface(config, "edit")
     add_interface(config, "routing")
 

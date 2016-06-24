@@ -1,0 +1,225 @@
+extends: CONST_vars.yaml
+
+vars:
+    # database name
+    db: demo_geomapfish_basel
+    # database schema
+    schema: main
+
+    # the visible host name
+    host: gmf-test.sig.cloud.camptocamp.net
+
+    srid: 21781
+
+    # all interface used to create the apache rewrite rules
+    interfaces:
+    - main
+    - mobile
+    - old
+    - cgxp
+    - edit
+    - routing
+
+    # The application's default language. This is the language used by
+    # the application if no specific language is specified in the URLs.
+    # This also defines the language used for the text search.
+    default_locale_name: fr
+
+    # The set of languages supported by the applications.
+    available_locale_names:
+    - en
+    - fr
+    - de
+
+    authtkt:
+        # One day
+        timeout: 86400
+
+    tiles_url:
+    - https://{host}/{instanceid}/tiles
+
+    admin_interface:
+        # Default values for the admin interface's maps.
+        map_x: 740000
+        map_y: 5860000
+        map_zoom: 10
+
+        # The list of functionalities that can be configured
+        # through the admin interface.
+        available_functionalities:
+        - mobile_default_theme
+        - location
+
+    functionalities:
+        # Functionalities that are accessible to anonymous
+        # users.
+        anonymous:
+            print_template:
+            - 1 A4 portrait
+            - 2 A4 landscape
+            - 3 A3 portrait
+            - 4 A3 landscape
+            default_basemap: asitvd.fond_gris
+            mobile_default_theme:
+#            location:
+#            - "'Lausanne': [535436, 155243, 539476, 150443]"
+#            - "'Pully': [539606, 152493, 541106, 150443]"
+#            - "'Vevey': [551755, 149340, 555995, 145060]"
+
+
+        # Functionalities that are accessible to authenticated
+        # users with no associated functionalities in the
+        # database.
+        registered:
+            print_template:
+            - 1 A4 portrait
+
+        # Functionalities that are made available to Mako templates.
+        available_in_templates:
+        - default_basemap
+        - location
+
+    # Define URLs to the parent application. Only useful if
+    # this application is a child application in a parent/child
+    # architecture.
+    external_themes_url:
+    external_mapserv_url:
+
+    layers:
+        geometry_validation: True
+
+    # The "raster web services" configuration. See the "raster"
+    # chapter in the integrator documentation.
+    raster:
+        srtm:
+            file: /var/sig/SRTM21781/srtm.shp
+            round: 1
+        aster:
+            file: /var/sig/Aster21781/aster.shp
+            round: 1
+
+    fulltextsearch:
+        languages:
+            fr: fr
+            en: english
+            de: german
+
+    reset_password:
+        # Used to send a confirmation email
+        email_from: info@camptocamp.com
+        email_subject: New password generated for GeoMapFish
+        email_body: |
+            Hello,
+
+            You have asked for an new password,
+            the new generated password is: {password}
+
+            Sincerely yours
+            The GeoMapfish team
+        smtp_server: psemail.epfl.ch
+
+    resourceproxy:
+        targets:
+            point: http://www.openstreetmap.org/node/%s
+
+    servers:
+      local: https://{host}
+      instance: https://{host}/{instanceid}
+      tiles: https://{host}/{instanceid}/tiles
+
+    headers:
+        themes: &headers
+            access_control_max_age: 30
+            access_control_allow_origin:
+            - https://camptocamp.github.io
+            - https://fredj.github.io
+            - https://pgiraud.github.io
+            - https://ger-benjamin.github.io
+            - https://tsauerwein.github.io
+            - https://ger-benjamin.github.io
+            - https://adube.github.io
+            - https://oliviersemet.github.io
+            - http://localhost:3000
+            - http://localhost
+            - http://127.0.0.1:3000
+            - http://127.0.0.1
+            - "*"
+        mapserver: *headers
+        fulltextsearch: *headers
+        print: *headers
+        layers: *headers
+        raster: *headers
+        profile: *headers
+        login:
+            access_control_max_age: 30
+            access_control_allow_origin:
+            - https://camptocamp.github.io
+            - https://fredj.github.io
+            - https://pgiraud.github.io
+            - https://ger-benjamin.github.io
+            - https://tsauerwein.github.io
+            - https://ger-benjamin.github.io
+            - https://adube.github.io
+            - https://oliviersemet.github.io
+            - http://localhost:3000
+            - http://localhost
+            - http://127.0.0.1:3000
+            - http://127.0.0.1
+
+    authorized_referers:
+    - https://geomapfish-demo.camptocamp.net/
+    - https://gmf-test.sig.cloud.camptocamp.net/
+    - https://camptocamp.github.io/
+    - https://fredj.github.io/
+    - https://pgiraud.github.io/
+    - https://ger-benjamin.github.io/
+    - https://tsauerwein.github.io/
+    - https://ger-benjamin.github.io/
+    - https://adube.github.io/
+    - https://oliviersemet.github.io/
+    - http://localhost:8480/
+    - http://localhost:3000/
+    - http://localhost/
+    - http://127.0.0.1:3000/
+    - http://127.0.0.1/
+
+    access_control_allow_origin:
+    - https://camptocamp.github.io
+
+    # Checker configuration
+    checker:
+        defaults:
+            routes_disable: []
+            fulltextsearch: pau
+            print_spec:
+                layout: "1 A4 portrait"
+                outputFormat: "pdf"
+                attributes:
+                    title: ""
+                    comments: ""
+                    datasource: []
+                    map:
+                        projection: "EPSG:21781"
+                        dpi: 254
+                        rotation: 0
+                        center: [600000, 200000]
+                        scale: 100000
+                        longitudeFirst: true
+                        layers: []
+                    legend: {}
+        all:
+            routes_disable: []
+
+    check_collector:
+        disabled:
+        - checker_main
+        - checker_viewer
+        hosts: []
+
+update_paths:
+- authtkt
+- checker.defaults
+- checker.all
+- check_collector.disabled
+- check_collector.hosts
+- admin_interface.available_functionalities
