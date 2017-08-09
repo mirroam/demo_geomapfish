@@ -16,6 +16,8 @@ env.DOCKER_TAG = tag
 dockerBuild {
     stage('Build') {
         checkout scm
+        sh 'rm -rf node_modules || true'
+        sh 'ln -s /usr/lib/node_modules .'
         sh 'docker pull camptocamp/geomapfish_build:jenkins'
         sh './docker-run make build'
     }
