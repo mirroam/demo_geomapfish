@@ -735,12 +735,10 @@ $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-$(L10N_SERVER_POSTFIX).po: $(PACKAGE)
 	[ ! -f $< ] || msgmerge --backup=none --update --sort-output --no-location $@ $<
 
 .PRECIOUS: $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-$(L10N_CLIENT_POSTFIX).po
-$(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-$(L10N_CLIENT_POSTFIX).po: $(PACKAGE)/locale/$(PACKAGE)-$(L10N_CLIENT_POSTFIX).pot
+$(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-$(L10N_CLIENT_POSTFIX).po:
 	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
-	[ -f $@ ] || msginit --no-translator --input=$< --output-file=$@ -l $*
 	touch --no-create $@
-	msgmerge --backup=none --update --sort-output --no-location $@ $<
 
 .PRECIOUS: %.mo
 %.mo: %.po
