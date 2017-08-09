@@ -17,7 +17,7 @@ dockerBuild {
     stage('Build') {
         checkout scm
         sh 'docker pull camptocamp/geomapfish_build:jenkins'
-        sh './docker-run make -j2 build'
+        sh './docker-run make build'
     }
     stage('Test') {
         checkout scm
