@@ -61,7 +61,7 @@ vars:
     enable_admin_interface: True
 
     directory: __import__('os').getcwd()
-    python_path: __import__('distutils').sysconfig.get_python_lib()
+    python_path: __import__('sys').path
     ps: __import__('os').path.sep
 
     # Authentication settings
