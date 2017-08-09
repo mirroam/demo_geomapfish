@@ -810,7 +810,7 @@ $(APP_OUTPUT_DIR)/%.json: $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-$(L10N_CLIE
 		.build/node_modules.timestamp
 	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
-	$(COMPILE_CATALOG) \
+	node $(COMPILE_CATALOG) \
 		.build/locale/$*/LC_MESSAGES/gmf.po \
 		.build/locale/$*/LC_MESSAGES/ngeo.po \
 		$< > $@
