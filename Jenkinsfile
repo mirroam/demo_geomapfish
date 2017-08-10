@@ -21,12 +21,12 @@ dockerBuild {
         sh 'docker pull camptocamp/geomapfish_build:jenkins'
         sh './docker-run make build'
     }
-    stage('Test') {
-        checkout scm
-        sh 'docker-compose up'
-        sh 'curl https://localhost:8480/wsgi/check_collector?'
-        sh 'curl https://localhost:8480/wsgi/check_collector?type=all'
-    }
+//    stage('Test') {
+//        checkout scm
+//        sh 'docker-compose up'
+//        sh 'curl https://localhost:8480/wsgi/check_collector?'
+//        sh 'curl https://localhost:8480/wsgi/check_collector?type=all'
+//    }
     stage('Publish') {
          withCredentials([[
             $class: 'UsernamePasswordMultiBinding',
