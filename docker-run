@@ -24,6 +24,7 @@ def main():
 
     docker_cmd.extend([
         "--rm",
+        "--volume=/var/run/docker.sock:/var/run/docker.sock",
         "--volume=build:/build",
         "--volume={pwd}:/src".format(pwd=os.getcwd()),
         "--volume={home}:{home}".format(home=os.environ["HOME"]),
