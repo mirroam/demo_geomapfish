@@ -108,38 +108,7 @@ DEFAULT_BUILD_RULES += $(WMTSCAPABILITIES_FILE)
 endif
 endif
 
-# Test packages
-ifndef TEST_PACKAGES
-TEST_PACKAGES = common
-ifeq ($(DOCKER), FALSE)
-TEST_PACKAGES += main
-ifneq (, $(filter $(PRINT_VERSION), 2 3))
-TEST_PACKAGES += print
-endif
-ifeq ($(MAPSERVER), TRUE)
-TEST_PACKAGES += mapserver
-endif
-ifeq ($(POSTGRES), TRUE)
-TEST_PACKAGES += postgres
-endif
-ifeq ($(TILECLOUD_CHAIN), TRUE)
-TEST_PACKAGES += tilecloud-chain
-endif
-ifeq ($(DEPLOY), TRUE)
-TEST_PACKAGES += deploy
-endif
-ifneq ($(NGEO_INTERFACES), "")
-TEST_PACKAGES += ngeo
-endif
-else
-TEST_PACKAGES += docker
-endif # DOCKER
-endif # TEST_PACKAGES
-
 # Make rules
-ifneq ($(TEST_PACKAGES), FALSE)
-DEFAULT_BUILD_RULES += test-packages
-endif
 ifeq ($(TILECLOUD_CHAIN), TRUE)
 DEFAULT_BUILD_RULES += tilegeneration/config.yaml
 endif
@@ -1048,20 +1017,6 @@ $(CSS_XAPI_OUTPUT): $(VENV_BIN)cssmin$(PYTHON_BIN_POSTFIX) \
 		$(CSS_XAPI_FILES)
 	$(PRERULE_CMD)
 	$(VENV_BIN)c2c-cssmin $(CSSMIN_ARGS) $@ $(CSS_XAPI_FILES)
-
-# Check packages
-
-$(VENV_BIN)c2c-versions$(PYTHON_BIN_POSTFIX): .build/dev-requirements.timestamp
-
-.PHONY: test-packages
-test-packages: .build/test-packages.timestamp
-
-.build/test-packages.timestamp: $(VENV_BIN)c2c-versions$(PYTHON_BIN_POSTFIX) CONST_packages.yaml
-	$(PRERULE_CMD)
-	$(VENV_BIN)c2c-versions CONST_packages.yaml $(TEST_PACKAGES)
-	touch $@
-
-# Check
 
 $(VENV_BIN)theme2fts$(PYTHON_BIN_POSTFIX): .build/dev-requirements.timestamp
 $(VENV_BIN)flake8$(PYTHON_BIN_POSTFIX): .build/dev-requirements.timestamp
