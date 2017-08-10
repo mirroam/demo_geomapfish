@@ -253,7 +253,7 @@ NGEO_PROJECT_LIBS_JS_FILES ?=
 ifeq ($(OPERATING_SYSTEM),WINDOWS)
 COMPILE_CATALOG = node_modules/ngeo/buildtools/compile-catalog.js
 else
-COMPILE_CATALOG = compile-catalog
+COMPILE_CATALOG = /usr/bin/compile-catalog
 endif
 
 # i18n
