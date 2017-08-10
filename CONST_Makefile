@@ -912,15 +912,15 @@ node_modules/ngeo/buildtools/mako_build.json: .build/node_modules.timestamp
 		--var entry_point=$(PACKAGE)_$* \
 		--var ngeo_folder=node_modules/ngeo/ \
 		$(MAKO_BUILD_ARGS) \
-		--var generate_exports=true $< > $@
+		--var generate_exports=true $< | sed 's/.build\/externs/\/opt\/googleclosurecompiler-externs/g' > $@
 
 .PRECIOUS: .build/%.js
 .build/%.js: .build/%.json $(OL_JS_FILES) $(NGEO_JS_FILES) $(APP_JS_FILES) \
 		.build/gmftemplatecache.js \
-		.build/externs/angular-$(ANGULAR_VERSION).js \
-		.build/externs/angular-$(ANGULAR_VERSION)-q_templated.js \
-		.build/externs/angular-$(ANGULAR_VERSION)-http-promise_templated.js \
-		.build/externs/jquery-1.9.js \
+		/opt/googleclosurecompiler-externs/angular-$(ANGULAR_VERSION).js \
+		/opt/googleclosurecompiler-externs/angular-$(ANGULAR_VERSION)-q_templated.js \
+		/opt/googleclosurecompiler-externs/angular-$(ANGULAR_VERSION)-http-promise_templated.js \
+		/opt/googleclosurecompiler-externs/jquery-1.9.js \
 		.build/node_modules.timestamp
 	$(PRERULE_CMD)
 	node node_modules/ngeo/buildtools/build.js $< $@
@@ -948,26 +948,6 @@ $(APP_OUTPUT_DIR)/templatecache.js: .build/gmftemplatecache.js
 		$(PACKAGE)_partials:$(PACKAGE)/static-ngeo/partials \
 		$(PACKAGE)_js:$(PACKAGE)/static-ngeo/js"\
 		--var "app=$(PACKAGE)" $< > $@
-
-.build/externs/angular-$(ANGULAR_VERSION).js: node_modules/ngeo/github_versions
-	$(PRERULE_CMD)
-	mkdir -p $(dir $@)
-	curl --max-redirs 0 --location --output $@ https://raw.githubusercontent.com/google/closure-compiler/master/contrib/externs/angular-$(ANGULAR_VERSION).js
-
-.build/externs/angular-$(ANGULAR_VERSION)-q_templated.js: node_modules/ngeo/github_versions
-	$(PRERULE_CMD)
-	mkdir -p $(dir $@)
-	curl --max-redirs 0 --location --output $@ https://raw.githubusercontent.com/google/closure-compiler/master/contrib/externs/angular-$(ANGULAR_VERSION)-q_templated.js
-
-.build/externs/angular-$(ANGULAR_VERSION)-http-promise_templated.js: node_modules/ngeo/github_versions
-	$(PRERULE_CMD)
-	mkdir -p $(dir $@)
-	curl --max-redirs 0 --location --output $@ https://raw.githubusercontent.com/google/closure-compiler/master/contrib/externs/angular-$(ANGULAR_VERSION)-http-promise_templated.js
-
-.build/externs/jquery-1.9.js: node_modules/ngeo/github_versions
-	$(PRERULE_CMD)
-	mkdir -p $(dir $@)
-	curl --max-redirs 0 --location --output $@ https://raw.githubusercontent.com/google/closure-compiler/`grep ^closure-compiler= $< | cut --delimiter = --fields 2  | tr --delete '\r\n'`/contrib/externs/jquery-1.9.js
 
 package.json:
 	$(PRERULE_CMD)
