@@ -14,11 +14,13 @@ if (env.BRANCH_NAME == 'master') {
 env.DOCKER_TAG = tag
 
 dockerBuild {
+    stage('Docker pull') {
+        sh 'docker pull camptocamp/geomapfish_build:jenkins'
+    }
     stage('Build') {
         checkout scm
         sh 'rm -rf node_modules || true'
         sh 'ln -s /usr/lib/node_modules .'
-        sh 'docker pull camptocamp/geomapfish_build:jenkins'
         sh './docker-run make build'
     }
 //    stage('Test') {
