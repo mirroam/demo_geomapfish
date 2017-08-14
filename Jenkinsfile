@@ -16,6 +16,8 @@ env.DOCKER_TAG = tag
 dockerBuild {
     stage('Docker pull') {
         sh 'docker pull camptocamp/geomapfish_build:jenkins'
+        sh 'docker pull camptocamp/mapserver:latest'
+        sh 'docker pull camptocamp/mapfish_print:3.10.0'
     }
     stage('Build') {
         checkout scm
