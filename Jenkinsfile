@@ -1,48 +1,43 @@
-#!groovy
-@Library('c2c-pipeline-library')
-import static com.camptocamp.utils.*
+#!/usr/bin/groovy
 
-final IMAGES = ['wsgi', 'mapserver', 'print']
-final IMAGES_BASE_NAME = 'camptocamp/demo-geomapfish'
+// // Load shared library
+// @Library('github.com/camptocamp/c2c-pipeline-library@master') import static com.camptocamp.utils.*
 
-if (env.BRANCH_NAME == 'master') {
-    tag = 'latest'
-} else {
-    tag = env.BRANCH_NAME
-}
+pipeline {
+  agent {
+    // run with the custom geomapfish slave
+    // will dynamically provision a new pod on Openshift
+    label 'geomapfish'
+  }
 
-env.DOCKER_TAG = tag
-
-dockerBuild {
-    stage('Docker pull') {
-        sh 'docker pull camptocamp/geomapfish_build:jenkins'
-        sh 'docker pull camptocamp/mapserver:latest'
-        sh 'docker pull camptocamp/mapfish_print:3.10.0'
+  stages {
+    stage('build') {
+      // TODO
+      steps {
+        sh returnStdout: true, script: 'rm -rf node_modules || true'
+        sh returnStdout: true, script: 'ln -s /usr/lib/node_modules .'
+        sh returnStdout: true, script: 'make build'
+      }
     }
-    stage('Build') {
-        checkout scm
-        sh 'rm -rf node_modules || true'
-        sh 'ln -s /usr/lib/node_modules .'
-        sh './docker-run make build'
+
+    stage('deploy-staging') {
+      steps {
+        sh 'ls'
+        // TODO
+      }
     }
-//    stage('Test') {
-//        checkout scm
-//        sh 'docker-compose up'
-//        sh 'curl https://localhost:8480/wsgi/check_collector?'
-//        sh 'curl https://localhost:8480/wsgi/check_collector?type=all'
-//    }
-    stage('Publish') {
-         withCredentials([[
-            $class: 'UsernamePasswordMultiBinding',
-            credentialsId: 'dockerhub',
-            usernameVariable: 'USERNAME',
-            passwordVariable: 'PASSWORD'
-        ]]) {
-            sh 'docker login -u "$USERNAME" -p "$PASSWORD"'
-            for (String image : IMAGES) {
-                docker.image("${IMAGES_BASE_NAME}_${image}:${tag}").push()
-            }
-            sh 'rm -rf ~/.docker*'
-         }
+
+    stage('deploy-preprod') {
+      steps {
+        sh 'pwd'
+        // TODO
+      }
     }
+
+    stage('deploy-prod') {
+      steps {
+        sh 'pwd'
+      }
+    }
+  }
 }
