@@ -13,9 +13,12 @@ pipeline {
   stages {
     stage('build') {
       // TODO
-      steps {
-        sh returnStdout: true, script: 'rm -rf node_modules || true'
-        sh returnStdout: true, script: 'ln -s /usr/lib/node_modules .'
+    steps {
+        sh 'cd'
+        checkout scm
+        sh returnStdout: true, script: 'pwd'
+        sh 'rm -rf node_modules || true'
+        sh 'ln -s /usr/lib/node_modules .'
         sh returnStdout: true, script: 'make build'
       }
     }
