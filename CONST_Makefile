@@ -1046,7 +1046,8 @@ $(VENV_BIN)flake8$(PYTHON_BIN_POSTFIX): .build/dev-requirements.timestamp
 .PHONY: print
 ifeq ($(DOCKER), TRUE)
 print: print/Dockerfile $(PRINT_REQUIREMENT)
-	docker build -t $(DOCKER_BASE)_print:$(DOCKER_TAG) print
+	# Openshift hack
+	#docker build -t $(DOCKER_BASE)_print:$(DOCKER_TAG) print
 
 else # !DOCKER
 print: $(PRINT_OUTPUT)/$(PRINT_WAR)
@@ -1115,7 +1116,8 @@ endif
 .PHONY: mapserver_docker
 mapserver_docker: mapserver/Dockerfile $(MAKO_FILES:.mako=) mapserver/mapserver.map
 	$(PRERULE_CMD)
-	docker build -t $(DOCKER_BASE)_mapserver:$(DOCKER_TAG) mapserver
+	# Openshift hack
+	#docker build -t $(DOCKER_BASE)_mapserver:$(DOCKER_TAG) mapserver
 
 mapserver/mapserver.map: mapserver/c2cgeoportal.map
 	$(PRERULE_CMD)
@@ -1124,7 +1126,8 @@ mapserver/mapserver.map: mapserver/c2cgeoportal.map
 .PHONY: wsgi_docker
 wsgi_docker: requirements.txt .whiskey/action_hooks/pre-build
 	$(PRERULE_CMD)
-	docker build -t $(DOCKER_BASE)_wsgi:$(DOCKER_TAG) .
+	# Openshift hack
+	#docker build -t $(DOCKER_BASE)_wsgi:$(DOCKER_TAG) .
 	rm requirements.txt
 
 .PHONY: requirements.txt
@@ -1222,9 +1225,10 @@ upgrade6: $(VENV_BIN)c2ctool$(PYTHON_BIN_POSTFIX) project.yaml $(UPGRADE_MAKE_FI
 ifeq ($(DOCKER), TRUE)
 .PHONY: push_docker
 push_docker:
-	docker push $(DOCKER_BASE)_print:$(DOCKER_TAG)
-	docker push $(DOCKER_BASE)_wsgi:$(DOCKER_TAG)
-	docker push $(DOCKER_BASE)_mapserver:$(DOCKER_TAG)
+	# Openshift hack
+	#docker push $(DOCKER_BASE)_print:$(DOCKER_TAG)
+	#docker push $(DOCKER_BASE)_wsgi:$(DOCKER_TAG)
+	#docker push $(DOCKER_BASE)_mapserver:$(DOCKER_TAG)
 
 .PHONY: testDB
 testDB: testDB/12-alembic.sql testDB/13-alembic-static.sql
