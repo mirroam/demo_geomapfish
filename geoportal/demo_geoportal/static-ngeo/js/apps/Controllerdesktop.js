@@ -17,8 +17,7 @@ import EPSG2056 from '@geoblocks/proj/src/EPSG_2056.js';
 import EPSG21781 from '@geoblocks/proj/src/EPSG_21781.js';
 import Raven from 'raven-js/src/raven.js';
 import RavenPluginsAngular from 'raven-js/plugins/angular.js';
-import Style from 'ol/style/Style';
-import Icon from 'ol/style/Icon';
+import {Style, Icon} from 'ol/style';
 
 if (!window.requestAnimationFrame) {
   alert('Your browser is not supported, please update it or use another one. You will be redirected.\n\n'
@@ -134,8 +133,7 @@ module.value('gmfPermalinkOptions', /** @type {PermalinkOptions} */ ({
     new Style({
       image: new Icon({
         // @ts-ignore: webpack
-        src: './image/crosshair.svg'
-        //src: require('./image/crosshair.svg')
+        src: require('file-loader?name=[name].[hash:6].[ext]!./image/crosshair.svg')
       })
     })
   ]
