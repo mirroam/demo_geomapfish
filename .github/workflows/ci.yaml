@@ -31,8 +31,7 @@ jobs:
         if: "env.HELM_RELEASE_NAMES != ''"
       - run: scripts/publish-docker --image=config --no-trigger
         if: "env.HELM_RELEASE_NAMES != ''"
-      - run: echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u $GITHUB_ACTOR --password-stdin
-      - run: scripts/publish-docker --image=config --no-login --prefix=ghcr.io/
+      - run: scripts/publish-docker --image=config --service=github
         if: "env.HELM_RELEASE_NAMES != ''"
 
   geoportal:

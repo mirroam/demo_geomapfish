@@ -10,6 +10,10 @@ pep8:
 pylint:
   options:
     max-line-length: 110
+  disable:
+    - too-many-locals
+    - too-many-statements
+    - too-many-branches
 
 mccabe:
   run: false
