@@ -1,6 +1,15 @@
 ---
-
 strictness: veryhigh
+
+pep8:
+  options:
+    max-line-length: 110
+  disable:
+    - E203
+
+pylint:
+  options:
+    max-line-length: 110
 
 mccabe:
   run: false
